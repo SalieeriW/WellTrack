@@ -1,5 +1,5 @@
 --
--- adminQL database dump
+-- PostgreSQL database dump
 --
 
 -- Dumped from database version 17.4
@@ -22,7 +22,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: challenge; Type: TABLE; Schema: public; Owner: admin
+-- Name: challenge; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.challenge (
@@ -37,10 +37,10 @@ CREATE TABLE public.challenge (
 );
 
 
-ALTER TABLE public.challenge OWNER TO admin;
+ALTER TABLE public.challenge OWNER TO postgres;
 
 --
--- Name: conf_pomodoro; Type: TABLE; Schema: public; Owner: admin
+-- Name: conf_pomodoro; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.conf_pomodoro (
@@ -51,10 +51,10 @@ CREATE TABLE public.conf_pomodoro (
 );
 
 
-ALTER TABLE public.conf_pomodoro OWNER TO admin;
+ALTER TABLE public.conf_pomodoro OWNER TO postgres;
 
 --
--- Name: conf_report; Type: TABLE; Schema: public; Owner: admin
+-- Name: conf_report; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.conf_report (
@@ -69,10 +69,10 @@ CREATE TABLE public.conf_report (
 );
 
 
-ALTER TABLE public.conf_report OWNER TO admin;
+ALTER TABLE public.conf_report OWNER TO postgres;
 
 --
--- Name: conf_user; Type: TABLE; Schema: public; Owner: admin
+-- Name: conf_user; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.conf_user (
@@ -86,26 +86,25 @@ CREATE TABLE public.conf_user (
 );
 
 
-ALTER TABLE public.conf_user OWNER TO admin;
+ALTER TABLE public.conf_user OWNER TO postgres;
 
 --
--- Name: report; Type: TABLE; Schema: public; Owner: admin
+-- Name: report; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.report (
-    name character varying(100) DEFAULT 'report_name'::character varying NOT NULL,
-    description character varying(100),
-    time_stamp timestamp with time zone DEFAULT now() NOT NULL,
-    content text NOT NULL,
-    user_id integer NOT NULL,
-    id integer NOT NULL
+    name character varying(100) DEFAULT 'daily_report'::character varying NOT NULL,
+    description character varying(100) DEFAULT 'description'::character varying,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    content text DEFAULT 'content'::text NOT NULL,
+    user_id integer NOT NULL
 );
 
 
-ALTER TABLE public.report OWNER TO admin;
+ALTER TABLE public.report OWNER TO postgres;
 
 --
--- Name: token; Type: TABLE; Schema: public; Owner: admin
+-- Name: token; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.token (
@@ -116,10 +115,10 @@ CREATE TABLE public.token (
 );
 
 
-ALTER TABLE public.token OWNER TO admin;
+ALTER TABLE public.token OWNER TO postgres;
 
 --
--- Name: user_data; Type: TABLE; Schema: public; Owner: admin
+-- Name: user_data; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.user_data (
@@ -128,14 +127,15 @@ CREATE TABLE public.user_data (
     breaks integer NOT NULL,
     posture_correction integer NOT NULL,
     nivel_of_stress integer NOT NULL,
-    last_updated timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+    last_updated timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    concentration_time integer DEFAULT 0 NOT NULL
 );
 
 
-ALTER TABLE public.user_data OWNER TO admin;
+ALTER TABLE public.user_data OWNER TO postgres;
 
 --
--- Name: user_setup; Type: TABLE; Schema: public; Owner: admin
+-- Name: user_setup; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.user_setup (
@@ -148,10 +148,10 @@ CREATE TABLE public.user_setup (
 );
 
 
-ALTER TABLE public.user_setup OWNER TO admin;
+ALTER TABLE public.user_setup OWNER TO postgres;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: admin
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.users (
@@ -162,10 +162,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO admin;
+ALTER TABLE public.users OWNER TO postgres;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -177,24 +177,24 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.users_id_seq OWNER TO admin;
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: admin
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Data for Name: challenge; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: challenge; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.challenge (user_id, name, description, created_at, progress, criteria, metric, completed) FROM stdin;
@@ -202,7 +202,7 @@ COPY public.challenge (user_id, name, description, created_at, progress, criteri
 
 
 --
--- Data for Name: conf_pomodoro; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: conf_pomodoro; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.conf_pomodoro (user_id, alert, restart_pomodoro, restart_break) FROM stdin;
@@ -211,7 +211,7 @@ COPY public.conf_pomodoro (user_id, alert, restart_pomodoro, restart_break) FROM
 
 
 --
--- Data for Name: conf_report; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: conf_report; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.conf_report (permitted, deep_think, auto_send, user_id, day_freq, week_freq, month_freq, trimester_freq) FROM stdin;
@@ -220,7 +220,7 @@ f	t	t	2	t	t	t	t
 
 
 --
--- Data for Name: conf_user; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: conf_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.conf_user (auto_monitoring, camera, alert_frequency, duration, data_retention, light_theme, user_id) FROM stdin;
@@ -229,15 +229,16 @@ f	t	90	90	90	t	2
 
 
 --
--- Data for Name: report; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: report; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.report (name, description, time_stamp, content, user_id, id) FROM stdin;
+COPY public.report (name, description, created_at, content, user_id) FROM stdin;
+daily_report	description	2025-04-27 16:16:52.285274+00	content	2
 \.
 
 
 --
--- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.token (email, token, expires_at, password) FROM stdin;
@@ -246,18 +247,18 @@ xuanyi.qiu@estudiantat.upc.edu	a1e844a3-b07b-4b63-81e4-04f9cb90eef3	2025-04-17 2
 
 
 --
--- Data for Name: user_data; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: user_data; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.user_data (user_id, hydration, breaks, posture_correction, nivel_of_stress, last_updated) FROM stdin;
-2	10	10	10	10	2025-04-24 11:57:19.107501+00
-2	10	10	10	10	2025-04-22 11:59:39.144486+00
-2	10	10	10	10	2025-04-14 11:59:44.106649+00
+COPY public.user_data (user_id, hydration, breaks, posture_correction, nivel_of_stress, last_updated, concentration_time) FROM stdin;
+2	10	10	10	10	2025-04-24 11:57:19.107501+00	0
+2	10	10	10	10	2025-04-22 11:59:39.144486+00	0
+2	10	10	10	10	2025-04-14 11:59:44.106649+00	0
 \.
 
 
 --
--- Data for Name: user_setup; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: user_setup; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.user_setup (user_id, setup, work_time, short_break, long_break, name_challenge) FROM stdin;
@@ -266,7 +267,7 @@ COPY public.user_setup (user_id, setup, work_time, short_break, long_break, name
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: admin
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.users (id, name, email, password) FROM stdin;
@@ -275,14 +276,14 @@ COPY public.users (id, name, email, password) FROM stdin;
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
--- Name: conf_user Conf_user_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: conf_user Conf_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.conf_user
@@ -290,7 +291,7 @@ ALTER TABLE ONLY public.conf_user
 
 
 --
--- Name: challenge challenge_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: challenge challenge_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.challenge
@@ -298,7 +299,7 @@ ALTER TABLE ONLY public.challenge
 
 
 --
--- Name: conf_pomodoro conf_pomodoro_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: conf_pomodoro conf_pomodoro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.conf_pomodoro
@@ -306,7 +307,7 @@ ALTER TABLE ONLY public.conf_pomodoro
 
 
 --
--- Name: conf_report conf_report_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: conf_report conf_report_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.conf_report
@@ -314,15 +315,7 @@ ALTER TABLE ONLY public.conf_report
 
 
 --
--- Name: report report_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
---
-
-ALTER TABLE ONLY public.report
-    ADD CONSTRAINT report_pkey PRIMARY KEY (user_id, id);
-
-
---
--- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: token token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.token
@@ -330,7 +323,7 @@ ALTER TABLE ONLY public.token
 
 
 --
--- Name: user_setup user_setup_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: user_setup user_setup_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.user_setup
@@ -338,7 +331,7 @@ ALTER TABLE ONLY public.user_setup
 
 
 --
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
@@ -346,7 +339,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
@@ -354,7 +347,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: conf_user user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: conf_user user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.conf_user
@@ -362,7 +355,7 @@ ALTER TABLE ONLY public.conf_user
 
 
 --
--- Name: conf_report user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: conf_report user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.conf_report
@@ -370,7 +363,7 @@ ALTER TABLE ONLY public.conf_report
 
 
 --
--- Name: report user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: report user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.report
@@ -378,7 +371,7 @@ ALTER TABLE ONLY public.report
 
 
 --
--- Name: user_data user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: user_data user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.user_data
@@ -386,7 +379,7 @@ ALTER TABLE ONLY public.user_data
 
 
 --
--- Name: challenge user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: challenge user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.challenge
@@ -394,7 +387,7 @@ ALTER TABLE ONLY public.challenge
 
 
 --
--- Name: conf_pomodoro user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: conf_pomodoro user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.conf_pomodoro
@@ -402,7 +395,7 @@ ALTER TABLE ONLY public.conf_pomodoro
 
 
 --
--- Name: user_setup user_id; Type: FK CONSTRAINT; Schema: public; Owner: admin
+-- Name: user_setup user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.user_setup
@@ -410,7 +403,7 @@ ALTER TABLE ONLY public.user_setup
 
 
 --
--- adminQL database dump complete
+-- PostgreSQL database dump complete
 --
 
 --
@@ -452,9 +445,9 @@ INSERT INTO public.token (email, token, expires_at, password) VALUES
 ('bob@example.com', 'reset_token_bob', '2025-05-01 12:00:00+00', 'old_hashed_password_bob');
 
 -- user_data
-INSERT INTO public.user_data (user_id, hydration, breaks, posture_correction, nivel_of_stress, last_updated) VALUES
-(1, 2, 7, 12, 2, '2025-04-27 16:05:00+00'),
-(3, 5, 3, 5, 4, '2025-04-27 16:10:00+00');
+INSERT INTO public.user_data (user_id, hydration, breaks, posture_correction, nivel_of_stress, concentration_time, last_updated) VALUES
+(1, 2, 7, 12, 2, 10, '2025-04-27 16:05:00+00'),
+(3, 5, 3, 5, 4, 20, '2025-04-27 16:10:00+00');
 
 -- user_setup
 INSERT INTO public.user_setup (user_id, setup, work_time, short_break, long_break, name_challenge) VALUES
