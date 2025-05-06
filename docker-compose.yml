@@ -1,4 +1,4 @@
-# version: "3.8"
+version: "3.8"
 
 services:
   db:
@@ -28,7 +28,6 @@ services:
       - "3001:3001"
     volumes:
       - ./PTI-WellTrackBack:/app
-      - /app/node_modules
 
   frontend:
     build:
@@ -37,11 +36,22 @@ services:
     container_name: frontend
     depends_on:
       - backend
+    environment:
+      - WATCHPACK_POLLING=true
     ports:
       - "3000:3000"
     volumes:
       - ./PTI-WellTrackFront:/app
       - /app/node_modules
+  # ia:
+  #   build:
+  #     context: ./PTI-IA # Pointing to the directory for the IA service
+  #     dockerfile: Dockerfile # Using the Dockerfile we generated earlier
+  #   container_name: ia
+  #   ports:
+  #     - "5000:5000" # Change port as needed
+  #   volumes:
+  #     - ./PTI-IA:/app # Mounting the directory containing the IA code
 
 volumes:
   db-data:
