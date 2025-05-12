@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ptiwelltrack
+      POSTGRES_DB: welltrackdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db_dump.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: ./PTI-WellTrackBack
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://admin:ptiwelltrack@db:5432/welltrackdb
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./PTI-WellTrackBack:/app
+
+  frontend:
+    build:
+      context: ./PTI-WellTrackFront
+      dockerfile: Dockerfile
+    container_name: frontend
+    depends_on:
+      - backend
+    environment:
+      - WATCHPACK_POLLING=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./PTI-WellTrackFront:/app
+      - /app/node_modules
+  ml:
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+    container_name: ml
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./ml:/app
+    restart: unless-stopped
+
+volumes:
+  db-data:
